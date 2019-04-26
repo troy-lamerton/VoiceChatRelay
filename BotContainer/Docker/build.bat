@@ -12,7 +12,7 @@ REM ## build vivox relay
 ECHO Building vivox relay C# proj
 ECHO.
 
-SET VRelay=..\VivoxVoiceRelayWindows\VivoxVoiceRelayWindows
+SET VRelay=..\VivoxVoiceBot\VivoxVoiceRelayWindows
 IF EXIST %VRelay%\bin\Release rmdir /S /Q %VRelay%\bin\Release
 CD %VRelay%
 CALL build.bat
