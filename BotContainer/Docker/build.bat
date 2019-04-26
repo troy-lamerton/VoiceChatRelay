@@ -42,4 +42,4 @@ REM ## finally build the container
 ECHO.
 ECHO Building docker container
 ECHO.
-docker build -t voice-relay:windows -f Dockerfile .
+docker build -t voice-relay:linux -f Dockerfile .

@@ -8,4 +8,4 @@ if not exist vivoxrelay exit 13
 echo.
 echo Build docker image
 echo.
-docker build -t voice-relay:windows -f Dockerfile .
+docker build -t voice-relay:linux -f Dockerfile .
