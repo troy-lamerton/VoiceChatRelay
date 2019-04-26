@@ -1,0 +1,44 @@
+{
+  "name": "controller",
+  "version": "1.0.0",
+  "description": "Spawns and controls a single discord bot and a vivox voice relay",
+  "main": "index.js",
+  "scripts": {
+    "start": "yarn container",
+    "build": "ts-node build.ts && webpack",
+    "run-container": "cd ../Docker && call ./run.bat",
+    "build-container": "cd ../Docker && call ./build.bat",
+    "rebuild-c": "cd ../Docker && call ./rebuild.bat && cd ../controller && yarn run-c",
+    "rebuild": "yarn rebuild-c && yarn run-c",
+    "build-c": "yarn build-container",
+    "run-c": "yarn run-container",
+    "container": "yarn build-container && yarn run-container",
+    "c": "yarn container",
+    "dev": "nodemon --delay 1 server/index.ts",
+    "dev:debug": "nodemon --exec 'node -r ts-node/register --inspect-brk' server/index.ts"
+  },
+  "dependencies": {
+    "@types/ip": "^1.1.0",
+    "dotenv": "^6.2.0",
+    "fastify": "^2.1.0",
+    "ip": "^1.1.5",
+    "pino": "^5.11.1",
+    "pino-pretty": "^2.6.0",
+    "shelljs": "^0.8.3"
+  },
+  "devDependencies": {
+    "@types/node": "^11.12.1",
+    "@types/pino": "^5.8.5",
+    "@types/shelljs": "^0.8.3",
+    "nodemon": "^1.18.10",
+    "ts-lint": "^4.5.1",
+    "ts-loader": "^5.3.3",
+    "ts-node": "^8.0.2",
+    "tslint": "^5.13.1",
+    "typescript": "^3.3.3333",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0"
+  },
+  "author": "Troy",
+  "license": "MIT"
+}

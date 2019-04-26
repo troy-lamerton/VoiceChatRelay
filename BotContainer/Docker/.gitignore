@@ -1,0 +1,5 @@
+# build folders - these are created when building the container
+controller/
+vivoxrelay/
+discordbot/bin
+discordbot/lib
