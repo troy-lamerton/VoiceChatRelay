@@ -1,27 +1,23 @@
-# escape=`
+FROM node:10
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update \
+  && apt-get install -y software-properties-common apt-transport-https \
+  && dpkg --add-architecture i386 \
+  && wget -nc https://dl.winehq.org/wine-builds/winehq.key \
+  && apt-key add winehq.key \
+  && apt-add-repository https://dl.winehq.org/wine-builds/debian/ \
+  && apt-get update \
+  && apt-get install -y --install-recommends winehq-stable xvfb \
+  && apt-get remove -y software-properties-common apt-transport-https \
+  && apt-get clean -y \
+  && apt-get autoremove -y
 
-FROM suchja/wine:latest
 
-## TODO: Install node js
-
-## TODO: Add java installation
-
-## Add built projects
-
-# ADD <relativepath/on/host> </path/in/container>
-ADD controller /controller
-ADD discordbot /discordbot
 ADD vivoxrelay /vivoxrelay
 
-## set environment variables
-ENV DBOT_PATH=/discordbot/bin/discordbot.bat `
-    VRELAY_PATH=/vivoxrelay/VivoxVoiceRelayWindows.exe `
-    PORT_CONTROLLER=3000 `
-    APP_ID=controller `
-    LOG_LEVEL=info `
-    VRELAY_PIPE_PREFIX=vrelay `
-    DBOT_PIPE_PREFIX=dbot `
-    DISCORD_LOGIN_TOKEN=NTUyNDk3MjI0Njk3OTA1MTg0.D3QuSw.LDA7IgupKRuYimrEA9h0sx6i9WQ
+# ENV WINEPREFIX /.wine
+ENV DISPLAY :99
 
-# WORKDIR /controller
-# CMD node .
+CMD Xvfb $DISPLAY -nolisten tcp & wine cmd.exe
+
+# CMD Xvfb $DISPLAY -nolisten tcp & wine /.wine/drive_c/Windows/System32/Notepad.exe

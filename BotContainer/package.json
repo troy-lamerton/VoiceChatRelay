@@ -1,0 +1,30 @@
+{
+  "name": "BotContainerScripts",
+  "version": "1.0.0",
+  "description": "Scripts to build the container and such",
+  "main": "index.js",
+  "scripts": {
+    "build": "ts-node ./Scripts/build.ts",
+    "run-container": "ts-node ./Scripts/run.ts",
+    "run-c": "yarn run-container",
+    "container": "yarn build && yarn run-container",
+    "c": "yarn container"
+  },
+  "dependencies": {
+    "pino": "^5.11.1",
+    "pino-pretty": "^2.6.0",
+    "rimraf": "^2.6.3",
+    "shelljs": "^0.8.3"
+  },
+  "devDependencies": {
+    "@types/node": "^11.12.1",
+    "@types/shelljs": "^0.8.3",
+    "ts-lint": "^4.5.1",
+    "ts-loader": "^5.3.3",
+    "ts-node": "^8.0.2",
+    "tslint": "^5.13.1",
+    "typescript": "^3.3.3333"
+  },
+  "author": "Troy",
+  "license": "MIT"
+}
