@@ -25,7 +25,7 @@ RUN apt-get update \
 RUN apt-get update --fix-missing
 RUN apt-get install -qq --install-recommends xvfb wine-staging winehq-staging
 
-# TODO: winetricks and dotnet 40
+# Use winetricks to install .NET Framework 4.5
 WORKDIR /helpers
 RUN wget -q http://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \
     && chmod +x ./winetricks \
@@ -34,8 +34,7 @@ RUN wget -q http://raw.githubusercontent.com/Winetricks/winetricks/master/src/wi
 ENV DISPLAY :99
 
 # CMD Xvfb $DISPLAY -nolisten tcp & wine cmd.exe
-
-## CMD Xvfb $DISPLAY -nolisten tcp & wine /.wine/drive_c/Windows/System32/Notepad.exe
+# CMD Xvfb $DISPLAY -nolisten tcp & wine /.wine/drive_c/Windows/System32/Notepad.exe
 
 ## Add built projects
 
@@ -56,6 +55,5 @@ ENV DBOT_PATH=/discordbot/bin/discordbot \
     DBOT_PIPE_PREFIX=dbot \
     DISCORD_LOGIN_TOKEN=NTUyNDk3MjI0Njk3OTA1MTg0.D3QuSw.LDA7IgupKRuYimrEA9h0sx6i9WQ
 
-RUN wine --version
 WORKDIR /controller
 CMD node .

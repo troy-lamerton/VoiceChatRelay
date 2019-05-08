@@ -3,3 +3,4 @@ controller/
 vivoxrelay/
 discordbot/bin
 discordbot/lib
+!vivoxrelay/run.sh

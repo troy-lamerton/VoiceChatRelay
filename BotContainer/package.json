@@ -9,7 +9,8 @@
     "run-c": "yarn run-container",
     "container": "yarn build && yarn run-container",
     "c": "yarn container",
-    "re": "ts-node ./Scripts/rebuild_container.ts"
+    "re": "ts-node ./Scripts/rebuild_container.ts",
+    "rerun": "yarn re && yarn run-c"
   },
   "dependencies": {
     "pino": "^5.11.1",
