@@ -1,5 +1,5 @@
 {
-  "name": "BotContainerScripts",
+  "name": "bot-container-scripts",
   "version": "1.0.0",
   "description": "Scripts to build the container and such",
   "main": "index.js",
@@ -8,7 +8,8 @@
     "run-container": "ts-node ./Scripts/run.ts",
     "run-c": "yarn run-container",
     "container": "yarn build && yarn run-container",
-    "c": "yarn container"
+    "c": "yarn container",
+    "re": "ts-node ./Scripts/rebuild_container.ts"
   },
   "dependencies": {
     "pino": "^5.11.1",

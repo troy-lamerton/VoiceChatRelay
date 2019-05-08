@@ -1,6 +1,7 @@
 import sh from 'shelljs'
 import rimraf from 'rimraf'
 import fs from 'fs'
+import buildContainer from './helpers/build_container'
 
 // clean
 rimraf.sync('./Docker/discordbot/bin')
@@ -27,8 +28,7 @@ execute('cd ./controller && yarn && yarn build')
 sh.cp('-r', './Controller/build', './Docker/controller')
 
 // finally build the container
-console.log('Building docker container')
-execute(`DISPLAY=192.168.2.112:0 cd ./Docker && docker build -t voice-relay:linux -f Dockerfile .`)
+buildContainer()
 
 function execute(command: string) {
     var res = sh.exec(command, {async: false})

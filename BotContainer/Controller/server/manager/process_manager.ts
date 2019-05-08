@@ -25,7 +25,7 @@ export default class AliveProcessManager {
         this.stopping = false
         this.keepAliveLoop()
     }
-    
+
     /**
      * @method killall Kill all spawned processes
      */
@@ -79,7 +79,7 @@ export default class AliveProcessManager {
                 args.push(this.dcommander.channelId)
             }
             this.dbot = this.spawnExecutable(process.env.DBOT_PATH, args)
-            
+
         } else if (name === 'vrelay') {
             this.vivoxRelayStatus = ProcessStatus.Starting
             const args = [this.vcommander.pipesPrefix]
@@ -87,6 +87,8 @@ export default class AliveProcessManager {
                 args.push(this.vcommander.guildId)
                 args.push(this.vcommander.channelId)
             }
+            shell.ls('/discordbot/bin')
+
             this.vrelay = this.spawnExecutable(process.env.VRELAY_PATH, args)
         }
     }
@@ -119,7 +121,7 @@ export default class AliveProcessManager {
             } else {
                 this.vivoxRelayStatus = raiseStatus(this.vivoxRelayStatus, ProcessStatus.Active)
             }
-            
+
             if (!result[1]) {
                 this.discordBotStatus = lowerStatus(this.discordBotStatus, ProcessStatus.Failing)
                 l.warn(`discord bot failed to respond -> ${this.discordBotStatus.toString()}`)
@@ -145,7 +147,7 @@ export default class AliveProcessManager {
     async checkDiscordBot() {
         return this.dcommander.ping()
     }
-    
+
     async checkVivoxRelay() {
         return this.vcommander.ping()
     }
