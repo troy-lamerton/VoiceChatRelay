@@ -47,7 +47,8 @@ abstract class NamedPipe {
     }
 
     getPipePath() {
-        return `\\\\.\\pipe\\${this.name}`
+        return `/tmp/.${this.name}`
+        // return `\\\\.\\pipe\\${this.name}` // windows
     }
 }
 
