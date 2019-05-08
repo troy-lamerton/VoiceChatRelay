@@ -36,7 +36,7 @@ public abstract class UdpBase {
     }
 
     public void Shutdown() {
-        Client.Dispose();
+        Client.Close();
     }
 }
 
@@ -53,7 +53,7 @@ public class UdpUser : UdpBase {
 #endif
 
     public bool IsConnected => ServerIp != null;
-    
+
     public static UdpUser ConnectTo(string hostname, int port) {
         var connection = new UdpUser();
         connection.Client.Connect(hostname, port);
