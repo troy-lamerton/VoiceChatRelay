@@ -3,7 +3,9 @@ import rimraf from 'rimraf'
 import fs from 'fs'
 import buildContainer from './helpers/build_container'
 import path from 'path'
+
 const j = path.join
+
 // clean
 rimraf.sync('./Docker/discordbot/bin')
 rimraf.sync('./Docker/discordbot/lib')

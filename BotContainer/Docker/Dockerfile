@@ -22,8 +22,8 @@ RUN curl -sL https://deb.nodesource.com/setup_11.x | bash \
     && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
     && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
     && apt-get update \
-    && apt-get install -y nodejs yarn \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get install -y nodejs yarn
+    # && rm -rf /var/lib/apt/lists/*
 
 # Prepare for wine & winetricks install
 RUN apt-get update \
@@ -33,7 +33,7 @@ RUN apt-get update \
     && apt-add-repository "deb https://dl.winehq.org/wine-builds/ubuntu/ xenial main"
 # Fix wine (dependencies?) before install
 RUN apt-get update --fix-missing
-RUN apt-get install -qq --install-recommends xvfb wine-staging winehq-staging
+RUN apt-get install -qq --install-recommends xvfb wine-staging winehq-staging winbind
 
 # TODO: winetricks and dotnet 40
 WORKDIR /helpers
@@ -43,22 +43,19 @@ RUN wget -q http://raw.githubusercontent.com/Winetricks/winetricks/master/src/wi
 
 ENV DISPLAY :99
 
-# CMD Xvfb $DISPLAY -nolisten tcp & wine cmd.exe
-
-## CMD Xvfb $DISPLAY -nolisten tcp & wine /.wine/drive_c/Windows/System32/Notepad.exe
-
 ## Add built projects
 
 COPY controller /controller
 COPY discordbot /discordbot
 COPY vivoxrelay /vivoxrelay
+COPY run_vrelay.sh /helpers/run_vrelay.sh
 
 RUN chmod +x /discordbot/bin/discordbot \
-    && chmod +x /vivoxrelay/run.sh
+    && chmod +x /run_vrelay.sh
 
 ## set environment variables
 ENV DBOT_PATH=/discordbot/bin/discordbot \
-    VRELAY_PATH=/vivoxrelay/run.sh \
+    VRELAY_PATH=/helpers/run_vrelay.sh \
     PORT_CONTROLLER=3000 \
     APP_ID=controller \
     LOG_LEVEL=info \
