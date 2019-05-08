@@ -31,6 +31,9 @@ RUN wget -q http://raw.githubusercontent.com/Winetricks/winetricks/master/src/wi
     && chmod +x ./winetricks \
     && ./winetricks --unattended dotnet45
 
+# dirty wine fixes
+RUN apt-get remove winbind && apt-get install -qq winbind
+
 ENV DISPLAY :99
 
 # CMD Xvfb $DISPLAY -nolisten tcp & wine cmd.exe
@@ -38,15 +41,24 @@ ENV DISPLAY :99
 
 ## Add built projects
 
-COPY controller /controller
-COPY discordbot /discordbot
-COPY vivoxrelay /vivoxrelay
+ADD controller /controller
+ADD discordbot /discordbot
+ADD vivoxrelay /vivoxrelay
 
 RUN chmod +x /discordbot/bin/discordbot \
     && chmod +x /vivoxrelay/run.sh
+RUN apt-get update \
+    && apt-get -qq install pulseaudio
+RUN useradd -m troy
+USER troy
+RUN pulseaudio --start \
+    && sleep 4 \
+    && pacmd load-module module-null-sink sink_name=Virtual_Sink sink_properties=device.description=Virtual_Sink \
+    && pactl list short sinks
 
 ## set environment variables
-ENV DBOT_PATH=/discordbot/bin/discordbot \
+# /discordbot/bin/discordbot \
+ENV DBOT_PATH=/bin/bash \
     VRELAY_PATH=/vivoxrelay/run.sh \
     PORT_CONTROLLER=3000 \
     APP_ID=controller \
@@ -54,6 +66,11 @@ ENV DBOT_PATH=/discordbot/bin/discordbot \
     VRELAY_PIPE_PREFIX=vrelay \
     DBOT_PIPE_PREFIX=dbot \
     DISCORD_LOGIN_TOKEN=NTUyNDk3MjI0Njk3OTA1MTg0.D3QuSw.LDA7IgupKRuYimrEA9h0sx6i9WQ
+
+USER 0
+
+# vivox ports??
+EXPOSE 80 443 6250 5060 5062 12000 65000
 
 WORKDIR /controller
 CMD node .
