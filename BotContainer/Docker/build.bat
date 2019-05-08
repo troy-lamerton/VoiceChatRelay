@@ -23,7 +23,7 @@ XCOPY /S /I /Q %VRelay%\bin\Release .\vivoxrelay
 
 REM ## build discord bot
 REM ## the code is built into Docker/discordbot
-CD ../discordbotjava
+CD ../DiscordVoiceBot
 ECHO.
 ECHO Building discord bot
 CALL .\gradlew.bat buildAndCopyToDocker
