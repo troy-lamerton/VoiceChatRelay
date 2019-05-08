@@ -1,5 +1,15 @@
 FROM ubuntu:16.04
 
+##
+# The following are the ports and ranges used by Vivox:
+
+# TCP: 80 and 443 - for web server (HTTP/HTTPS)
+# UDP: 6250, 5060 and 5062 - for voice control signals (SIP)
+# UDP: 12000 - 65000 - for voice media (RTP/RTCP)
+##
+EXPOSE 6250 5060 5062
+EXPOSE 12000-65000
+
 ENV DEBIAN_FRONTEND=noninteractive \
     WINEARCH=win32 \
     WINEPREFIX=/.wine32

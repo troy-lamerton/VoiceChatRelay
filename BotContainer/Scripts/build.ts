@@ -2,13 +2,13 @@ import sh from 'shelljs'
 import rimraf from 'rimraf'
 import fs from 'fs'
 import buildContainer from './helpers/build_container'
-
+import path from 'path'
+const j = path.join
 // clean
 rimraf.sync('./Docker/discordbot/bin')
 rimraf.sync('./Docker/discordbot/lib')
 rimraf.sync('./Docker/controller')
 // rimraf.sync('Docker/vivoxrelay') // NOTE: dont clean because this is built on a windows pc
-
 
 // TODO: get vrelay build from windows pc
 if (!fs.existsSync('Docker/vivoxrelay')) {
@@ -19,12 +19,12 @@ if (!fs.existsSync('Docker/vivoxrelay')) {
 // build discord bot
 // the code is built into Docker/discordbot
 console.log('Building discord bot')
-execute('cd ./DiscordVoiceBot && ./gradlew buildAndCopyToDocker')
+execute(`cd ${j('.', 'DiscordVoiceBot')} && ${j('.', 'gradlew')} buildAndCopyToDocker`)
 
 // build controller and copy into Docker/controller
 console.log('Building controller server')
 
-execute('cd ./controller && yarn && yarn build')
+execute(`cd ${j('.', 'controller')} && yarn && yarn build`)
 sh.cp('-r', './Controller/build', './Docker/controller')
 
 // finally build the container
