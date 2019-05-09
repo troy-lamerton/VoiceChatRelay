@@ -46,6 +46,7 @@ export default class AliveProcessManager {
     }
 
     spawnProcess(name: 'dbot' | 'vrelay') {
+        if (process.env.DONT_SPAWN) return;
         if (name === 'dbot') {
             // start discord bot and pass it the pipe prefix to use
             this.startProcess('dbot')
@@ -69,7 +70,7 @@ export default class AliveProcessManager {
             });
         }
     }
-
+    
     private startProcess(name: 'dbot' | 'vrelay') {
         if (name === 'dbot') {
             this.discordBotStatus = ProcessStatus.Starting
@@ -93,6 +94,7 @@ export default class AliveProcessManager {
         }
     }
     private spawnExecutable(executablePath: string, args: string[]) {
+        if (process.env.DONT_SPAWN) return;
         l.info(`spawning process ${executablePath}`)
         return child_process.spawn(executablePath, args)
     }
