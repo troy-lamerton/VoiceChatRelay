@@ -1,1 +1,0 @@
-Xvfb $DISPLAY -nolisten tcp & wine /vivoxrelay/VivoxVoiceRelayWindows.exe $0

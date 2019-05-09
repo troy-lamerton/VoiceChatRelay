@@ -45,29 +45,27 @@ RUN wget -q http://raw.githubusercontent.com/Winetricks/winetricks/master/src/wi
     && chmod +x ./winetricks \
     && ./winetricks --unattended dotnet45
 
-# dirty wine fixes
+# Installing dotnet45 switched the os to windows 2003, lets change to win 7 and fux it up
+    # && ./winetricks win7 \
 
-ENV DISPLAY :99
-
-## Add built projects
-
-COPY controller /controller
-COPY discordbot /discordbot
-COPY vivoxrelay /vivoxrelay
-COPY run_vrelay.sh /vivoxrelay/run.sh
-
-RUN chmod +x /discordbot/bin/discordbot \
-    && chmod +x /vivoxrelay/run.sh
+RUN wget 'http://download.microsoft.com/download/9/5/A/95A9616B-7A37-4AF6-BC36-D6EA96C8DAAE/dotNetFx40_Full_x86_x64.exe' \
+    && wine dotNetFx40_Full_x86_x64.exe /q && wineserver -k \
+    && ./winetricks settings list | grep sound \
+    && ./winetricks sound=alsa \
+    && ./winetricks settings list | grep sound
 
 # fake audio output device - not really working tho
-RUN apt-get update \
-    && apt-get -qq install pulseaudio
-RUN useradd -m troy
-USER troy
-RUN pulseaudio --start \
-    && sleep 4 \
-    && pacmd load-module module-null-sink sink_name=Virtual_Sink sink_properties=device.description=Virtual_Sink \
-    && pactl list short sinks
+# RUN apt-get update \
+#     && apt-get -qq install pulseaudio
+# RUN useradd -m troy
+# USER troy
+# RUN pulseaudio --start \
+#     && sleep 4 \
+#     && pacmd load-module module-null-sink sink_name=Virtual_Sink sink_properties=device.description=Virtual_Sink \
+#     && pactl list short sinks
+# USER 0
+
+COPY asound.conf /etc/asound.conf
 
 ## set environment variables
 # /discordbot/bin/discordbot \
@@ -78,9 +76,18 @@ ENV DBOT_PATH=/bin/bash \
     LOG_LEVEL=info \
     VRELAY_PIPE_PREFIX=vrelay \
     DBOT_PIPE_PREFIX=dbot \
-    DISCORD_LOGIN_TOKEN=NTUyNDk3MjI0Njk3OTA1MTg0.D3QuSw.LDA7IgupKRuYimrEA9h0sx6i9WQ
+    DISCORD_LOGIN_TOKEN=NTUyNDk3MjI0Njk3OTA1MTg0.D3QuSw.LDA7IgupKRuYimrEA9h0sx6i9WQ \
+    DISPLAY=:99
 
-USER 0
+## Add built projects
+
+COPY controller /controller
+COPY discordbot /discordbot
+COPY vivoxrelay /vivoxrelay
+COPY run_vrelay.sh /vivoxrelay/run.sh
+
+RUN chmod +x /discordbot/bin/discordbot \
+    && chmod +x /vivoxrelay/run.sh
 
 WORKDIR /controller
 CMD node .
