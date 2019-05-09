@@ -1,4 +1,21 @@
-FROM ubuntu:16.04
+FROM rjrivero/lxde-vnc
+USER 0
+# FROM debian:stable-slim # the original base for crossover dockerfile
+COPY vncpasswd /home/vnc/Documents/vncpasswd
+ADD https://media.codeweavers.com/pub/crossover/cxlinux/demo/crossover_16.2.5-1.deb /crossover_16.2.5-1.deb
+
+RUN export DEBIAN_FRONTEND=noninteractive && \
+	dpkg --add-architecture i386 && \
+	apt-get update && \
+	apt-get install -y --no-install-recommends sudo python python-dbus python-gtk2 && \
+	useradd -ms /bin/bash -G sudo crossover && \
+	passwd -d crossover && \
+	(dpkg -i /crossover_16.2.5-1.deb 2>/dev/null || apt-get install -f -y --no-install-recommends) && \
+	rm -rf /crossover_16.2.5-1.deb /var/lib/apt/lists/*
+
+# USER crossover
+# WORKDIR /home/crossover
+# ENV HOME /home/crossover
 
 ##
 # The following are the ports and ranges used by Vivox:
@@ -27,32 +44,35 @@ RUN curl -sL https://deb.nodesource.com/setup_11.x | bash \
     && apt-get install -y nodejs yarn
     # && rm -rf /var/lib/apt/lists/*
 
+##
 # Prepare for wine & winetricks install
-RUN apt-get update \
-    && apt-get install -y software-properties-common apt-transport-https wget cabextract \
-    && dpkg --add-architecture i386 \
-    && wget -qO - https://dl.winehq.org/wine-builds/winehq.key | apt-key add - \
-    && apt-add-repository "deb https://dl.winehq.org/wine-builds/ubuntu/ xenial main"
+# RUN apt-get update \
+#     && apt-get install -y software-properties-common apt-transport-https wget cabextract \
+#     && dpkg --add-architecture i386 \
+#     && wget -qO - https://dl.winehq.org/wine-builds/winehq.key | apt-key add - \
+#     && apt-add-repository https://dl.winehq.org/wine-builds/debian/ \
+#     && apt-get update
 
 # Fix wine dependencies and then install wine
-RUN apt-get remove winbind && apt-get install -qq winbind \
-    && apt-get update --fix-missing \
-    && apt-get install -qq --install-recommends xvfb wine-staging winehq-staging
+# RUN apt-get remove winbind && apt-get install -qq winbind \
+    # && apt-get update --fix-missing \
+    # && apt-get install -qq --install-recommends xvfb winehq-staging
 
 # Use winetricks to install .NET Framework 4.5
-WORKDIR /helpers
-RUN wget -q http://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \
-    && chmod +x ./winetricks \
-    && ./winetricks --unattended dotnet45
+# WORKDIR /helpers
+# RUN wget -q http://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \
+#     && chmod +x ./winetricks \
+#     && ./winetricks --unattended dotnet45
 
 # Installing dotnet45 switched the os to windows 2003, lets change to win 7 and fux it up
     # && ./winetricks win7 \
 
-RUN wget 'http://download.microsoft.com/download/9/5/A/95A9616B-7A37-4AF6-BC36-D6EA96C8DAAE/dotNetFx40_Full_x86_x64.exe' \
-    && wine dotNetFx40_Full_x86_x64.exe /q && wineserver -k \
-    && ./winetricks settings list | grep sound \
-    && ./winetricks sound=alsa \
-    && ./winetricks settings list | grep sound
+# RUN wget 'http://download.microsoft.com/download/9/5/A/95A9616B-7A37-4AF6-BC36-D6EA96C8DAAE/dotNetFx40_Full_x86_x64.exe' \
+#     && wine dotNetFx40_Full_x86_x64.exe /q && wineserver -k \
+#     && ./winetricks settings list | grep sound \
+#     && ./winetricks sound=alsa \
+#     && ./winetricks settings list | grep sound
+##
 
 # fake audio output device - not really working tho
 # RUN apt-get update \
@@ -89,5 +109,9 @@ COPY run_vrelay.sh /vivoxrelay/run.sh
 RUN chmod +x /discordbot/bin/discordbot \
     && chmod +x /vivoxrelay/run.sh
 
-WORKDIR /controller
-CMD node .
+# WORKDIR /controller
+# CMD node .
+# USER vnc
+
+# crossover instaleld net framework 4.5.1 into bottle Windows 7
+# the crossover installer created the win7 bottle and then installed .net 2.0 and 4.0 into it
