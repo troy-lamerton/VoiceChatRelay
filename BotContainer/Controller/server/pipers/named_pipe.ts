@@ -3,6 +3,7 @@ import net, { Server, Socket } from 'net'
 import { eventPromise } from '../common/promise_utils';
 import { EventEmitter } from 'events';
 import { Message } from './pipe_client'
+import { platform } from 'os';
 
 abstract class NamedPipe {
     abstract name: string
@@ -47,8 +48,10 @@ abstract class NamedPipe {
     }
 
     getPipePath() {
+        if (platform() == "win32") {
+            return `\\\\.\\pipe\\${this.name}` // windows
+        }
         return `/tmp/.${this.name}`
-        // return `\\\\.\\pipe\\${this.name}` // windows
     }
 }
 

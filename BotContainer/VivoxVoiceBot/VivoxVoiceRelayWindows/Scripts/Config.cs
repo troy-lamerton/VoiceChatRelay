@@ -6,7 +6,7 @@ public static class Config {
     public static readonly Uri Server = new Uri("https://vdx5.www.vivox.com/api2");
     public static readonly string Domain = "vdx5.vivox.com";
     public static readonly string TokenIssuer = "troydemo-ddrelay-dev";
-    public static readonly string TokenKey = "7aMtaURSTc9CJfq2UHyGRfNT4WM4UaZd";
+    public static readonly string TokenKey = "Ni5Y1cpWfpDqZ0IQusS22Dy8tkpaF0AD";
     public static readonly TimeSpan TokenExpiration = TimeSpan.FromMinutes(2);
     
     // vivox other
