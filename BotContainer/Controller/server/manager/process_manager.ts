@@ -2,21 +2,21 @@ import shell from 'shelljs'
 import path from 'path'
 import child_process, { ChildProcess } from 'child_process'
 import l, { intArrayToString } from '../common/logger';
-import ControlPipe from '../pipers/control_pipe';
+import Controller from '../ws/controller';
 
 export default class AliveProcessManager {
     private nextCheckToken: NodeJS.Timeout
     private stopping = false
     
-    private dcommander: ControlPipe
-    private vcommander: ControlPipe
+    private dcommander: Controller
+    private vcommander: Controller
     private dbot: ChildProcess
     private vrelay: ChildProcess
     
     private discordBotStatus = ProcessStatus.Stopped
     private vivoxRelayStatus = ProcessStatus.Stopped
 
-    constructor(dcommander: ControlPipe, vcommander: ControlPipe) {
+    constructor(dcommander: Controller, vcommander: Controller) {
         this.dcommander = dcommander
         this.vcommander = vcommander
     }
@@ -74,7 +74,7 @@ export default class AliveProcessManager {
     private startProcess(name: 'dbot' | 'vrelay') {
         if (name === 'dbot') {
             this.discordBotStatus = ProcessStatus.Starting
-            const args = [this.dcommander.pipesPrefix, process.env.DISCORD_LOGIN_TOKEN]
+            const args = [this.dcommander.prefix, process.env.DISCORD_LOGIN_TOKEN]
             if (this.dcommander.guildId) {
                 args.push(this.dcommander.guildId)
                 args.push(this.dcommander.channelId)
@@ -83,7 +83,7 @@ export default class AliveProcessManager {
 
         } else if (name === 'vrelay') {
             this.vivoxRelayStatus = ProcessStatus.Starting
-            const args = [this.vcommander.pipesPrefix]
+            const args = [this.vcommander.prefix]
             if (this.vcommander.guildId) {
                 args.push(this.vcommander.guildId)
                 args.push(this.vcommander.channelId)

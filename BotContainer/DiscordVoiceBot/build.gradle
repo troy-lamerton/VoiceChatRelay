@@ -16,6 +16,7 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     compile 'net.dv8tion:JDA:3.8.3_462'
+    compile 'io.socket:socket.io-client:1.0.0'
     compile fileTree('libs/slf4j-simple-1.7.26.jar')
 }
 

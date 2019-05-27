@@ -43,7 +43,7 @@ class UdpServer(port: Int) : Thread() {
         val receiveHelloData = ByteArray(128)
         val receiveHelloPacket = DatagramPacket(receiveHelloData, receiveHelloData.size)
         while (running) {
-            log("udp","Udp socket begin - waiting for client")
+//            log("udp","Udp socket begin - waiting for client")
             socket.receive(receiveHelloPacket)
             val sentence = String(receiveHelloPacket.data).trim()
             if (sentence.startsWith("hello")) {
@@ -72,9 +72,8 @@ class UdpServer(port: Int) : Thread() {
                 Thread.sleep(10)
                 continue
             }
-            log("udp", "receiving...")
             socket.receive(pcmSamplePacket) // read bytes from unity into the packet
-            log("udp", "write to buffer")
+//            log("udp", "write to buffer")
             bufferToDiscord.writeToBuffer(pcmSamplePacket) // write bytes to buffer for JDA to collect
         }
 

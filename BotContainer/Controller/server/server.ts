@@ -1,12 +1,12 @@
 import fastify from 'fastify'
 import l from './common/logger'
 
-import ControlPipe from './pipers/control_pipe';
+import Controller from './ws/controller';
 import AliveProcessManager from './manager/process_manager'
-import { Message } from './pipers/pipe_client';
+import { Message } from './ws/ws_socket';
 
-const vcommander = new ControlPipe(process.env.VRELAY_PIPE_PREFIX, forwardMessage('discord'));
-const dcommander = new ControlPipe(process.env.DBOT_PIPE_PREFIX, forwardMessage('vivox'));
+const vcommander = new Controller(process.env.VRELAY_PIPE_PREFIX, forwardMessage('discord'));
+const dcommander = new Controller(process.env.DBOT_PIPE_PREFIX, forwardMessage('vivox'));
 // debug channel
 dcommander.guildId = vcommander.guildId = '551446223496675329'
 dcommander.channelId = vcommander.channelId = '551446224000253973'
@@ -28,7 +28,7 @@ function forwardMessage(to: 'discord' | 'vivox') {
 async function health (_, reply) {
     const dbot = await dcommander.ping()
     const vrelay = await vcommander.ping()
-    reply.send({ 
+    reply.send({
         dbot,
         vrelay
     })

@@ -1,0 +1,3 @@
+language: csharp
+solution: LibResample.Sharp.sln
+before_install: cd LibResample.Sharp

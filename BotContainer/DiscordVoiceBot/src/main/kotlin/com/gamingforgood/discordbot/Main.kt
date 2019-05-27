@@ -22,11 +22,13 @@ lateinit var discord: JDA
 
 val server = UdpServer(9050)
 
-lateinit var botController: ControlPipe
+lateinit var botController: ControllerClient
 
 val DEBUG = System.getenv().containsKey("DEBUG")
+val CONTROLLER_PORT = System.getenv()["PORT_CONTROLLER_WS"]
 
 fun main(args: Array<String>) {
+    check(!CONTROLLER_PORT.isNullOrEmpty()){"PORT_CONTROLLER_WS env missing - specify the ws port of the controller server"}
     log("main", "DBot started with ${args.size} args: ${args.joinToString(", ")}")
 
     if (args.size < 2) {
@@ -35,12 +37,15 @@ fun main(args: Array<String>) {
 
     val pipesPrefix = args[0]
     val autoJoinArgs = if (args.size >= 4) arrayOf(args[2], args[3]) else arrayOf()
-    botController = ControlPipe(pipesPrefix)
+
+    // blocking
+    val wsPort = CONTROLLER_PORT.toInt()
+    botController = ControllerClient(wsPort, pipesPrefix)
+
     discord = JDABuilder(args[1])
         .addEventListener(MainDiscordListener(botController, autoJoinArgs))
         .addEventListener()
         .build()!!
-    botController.start()
 
 //    debugPipes(pipesPrefix)
 

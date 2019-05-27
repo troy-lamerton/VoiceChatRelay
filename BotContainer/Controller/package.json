@@ -19,12 +19,15 @@
   },
   "dependencies": {
     "@types/ip": "^1.1.0",
+    "@types/sockjs": "^0.3.31",
+    "@types/ws": "^6.0.1",
     "dotenv": "^6.2.0",
     "fastify": "^2.1.0",
     "ip": "^1.1.5",
     "pino": "^5.11.1",
     "pino-pretty": "^2.6.0",
-    "shelljs": "^0.8.3"
+    "shelljs": "^0.8.3",
+    "ws": "^7.0.0"
   },
   "devDependencies": {
     "@types/node": "^11.12.1",
