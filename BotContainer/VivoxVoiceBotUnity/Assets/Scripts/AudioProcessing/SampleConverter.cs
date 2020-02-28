@@ -98,7 +98,7 @@ public class SampleConverter {
         resampleForVivoxLock.EnterWriteLock(); // writing to the output buffer in the resampler
 
         // convert them to vivox current sample rate
-//        int converted = resamplerDiscordToVivox.ProcessBytesAndWrite(discordInputBytes, outputSamples);
+        int converted = resamplerDiscordToVivox.ProcessBytesAndWrite(discordInputBytes, outputSamples);
         resampleForVivoxLock.ExitWriteLock();
 
         stopwatch2.Stop();

@@ -44,7 +44,6 @@ public class LibResampleResampler {
     // resamples the bytes and writes them to the shorts
     public unsafe int ProcessBytesAndWrite(byte[] discordSampleBytes, short* outputSamples) {
         Accord.Audio.SampleConverter.Convert(discordSampleBytes, inputBuffer);
-        
         var res = resampler.Process(factor, inputBuffer, 0, inputBuffer.Length, false, outputBuffer, 0, outputBuffer.Length);
         
         BitHelpers.WriteShorts(outputSamples, outputBuffer);
