@@ -1,4 +1,4 @@
-# Voice chat relay for Mobile
+# Voice chat relay for Discord <-> Vivox
 
 ## Why
 
