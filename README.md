@@ -1,8 +1,8 @@
-# Voice chat for Clash of Streamers
+# Voice chat relay for Mobile
 
 ## Why
 
-People in our game want to speak with their buddies in Discord.
+People in our game want to speak with their buddies in Discord. However, we use Vivox cloud to host our voice channels. 
 
 To do this, we need to manage connections to all voice channels that players are speaking/listening in.
 
